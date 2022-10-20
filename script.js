@@ -1,7 +1,3 @@
-let maze
-
-fetchData()
-
 // Select the canvas
 const canvas = document.querySelector('#myCanvas')
 
@@ -21,6 +17,9 @@ let score = 0
 let playerMovement = 0
 let hp = 0
 let weapon = 0
+
+let maze
+fetchData()
 
 function fetchMap(mapName) {
     fetchData(mapName)
