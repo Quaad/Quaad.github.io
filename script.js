@@ -212,10 +212,6 @@ async function fetchData(mazeMap) {
                 drawPlayer()
             } 
         }
-        if(colour == 2) {
-            score+= 50
-            points.innerText = "Score: " + score
-        }
     }
 
     // Check what location the player is attempting to move into
@@ -254,7 +250,7 @@ async function fetchData(mazeMap) {
             return 1
         } else if(colour == 2) {
             // increment points if colour was yellow
-            score+= 50
+            score+= 1
             pointsCheck()
             return 0
         } else if(colour == 3) {
