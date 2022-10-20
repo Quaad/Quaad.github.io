@@ -1,17 +1,19 @@
 // Select the canvas
-const canvas = document.querySelector('#myCanvas');
+const canvas = document.querySelector('#myCanvas')
+
 // get the canvas context
-let ctx = canvas.getContext('2d');
+let ctx = canvas.getContext('2d')
 
-let points = document.getElementById('points');
+// User Text display
+let points = document.getElementById('points')
 let health = document.getElementById('health')
+let goal = document.getElementById('goal')
 
-// starting coordinates
-let playerX=100
-let playerY=0
-let score=0
-points.innerText = "Score: " + score
-health.innerText = "Health: " + 3
+// global variables
+let playerX = 0
+let playerY = 0
+let score = 0
+let playerMovement = 0
 
 // maze data 
 let map = [
@@ -29,37 +31,52 @@ let map = [
     [1,1,1,1,1,1,1,1,0,1,1,1]
 ]
 
-// Maze generator
-for (let r = 0; r < map.length; r++) {
-    for(let c = 0; c < map[0].length; c++) {
-        ctx.fillStyle = 'blue';
-        if(map[r][c]==1) {
-            ctx.fillRect((c*50), (r*50), 50, 50);
-        } else if (map[r][c]==2) {
-            ctx.fillStyle = 'Yellow';
-            ctx.fillRect((c*50), (r*50), 50, 50);
+function gameStart() {
+
+    // setting player starting variables and text variables
+    playerX=100
+    playerY=0
+    score=0
+    playerMovement = 50
+    points.innerText = "Score: " + score
+    health.innerText = "Health: " + 3
+
+    // Maze generator
+    for (let r = 0; r < map.length; r++) {
+        for(let c = 0; c < map[0].length; c++) {
+            ctx.fillStyle = 'blue'
+            if(map[r][c]==1) {
+                ctx.fillRect((c*50), (r*50), 50, 50);
+            } else if (map[r][c]==2) {
+                ctx.fillStyle = 'Yellow';
+                ctx.fillRect((c*50), (r*50), 50, 50);
+            }
         }
     }
+
+    drawPlayer()
 }
 
 // Drawing the player and checking if they've reached the end
 function drawPlayer() {
     // set fill for blocks
-    ctx.fillStyle = 'green';
+    ctx.fillStyle = 'green'
     // draw a rectangle with fill 
-    ctx.fillRect(playerX, playerY, 50, 50);
-    // ctx.strokeRect(50, 50, 150, 100);
+    ctx.fillRect(playerX, playerY, 50, 50)
+
+    // Reaching end coordinates
     if (playerX==400 && playerY==550) {
-        console.log("GOAL")
+        goal.innerText = "Goal Reached!"
+        playerMovement = 0
     }
 }
 
+// Reset tile back to white
 function removePlayer() {
     // set fill for blocks back to default white
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = 'white'
     // draw a rectangle with fill 
-    ctx.fillRect(playerX, playerY, 50, 50);
-    // ctx.strokeRect(50, 50, 150, 100);
+    ctx.fillRect(playerX, playerY, 50, 50)
 }
 
 // Check for key input
@@ -71,7 +88,7 @@ document.onkeydown = function (e) {
 function keyPressed(event) {
     event.preventDefault(); 
     if (event.keyCode < 37 || event.keyCode > 40) {
-    return;
+        return
     }
 
     switch (event.keyCode) {
@@ -98,34 +115,37 @@ function keyPressed(event) {
 
 // move player function
 function movePlayer(direction) {
+    if(playerMovement == 0) {
+        return
+    }
     // set variables 
     let colour = 0
     if(direction == "up") {
         let colour = checkMaze(25, direction)
         if (playerY>0 && !colourCheck(colour)) {
             removePlayer()
-            playerY=playerY-50
+            playerY=playerY-playerMovement
             drawPlayer()
         } 
     } else if(direction == "down"){
         let colour = checkMaze(75, direction)
         if (playerY<550 && !colourCheck(colour)) {
             removePlayer()
-            playerY=playerY+50
+            playerY=playerY+playerMovement
             drawPlayer()
         } 
     } else if(direction == "left") {
         let colour = checkMaze(25, direction)
         if (playerY>0 && !colourCheck(colour)) {
             removePlayer()
-            playerX=playerX-50
+            playerX=playerX-playerMovement
             drawPlayer()
         } 
     } else if(direction == "right") {
         let colour = checkMaze(75, direction)
         if (playerY<550 && !colourCheck(colour)) {
             removePlayer()
-            playerX=playerX+50
+            playerX=playerX+playerMovement
             drawPlayer()
         } 
     }
@@ -200,4 +220,4 @@ function moveDown() {
     } 
 }
 
-drawPlayer()
+gameStart()
