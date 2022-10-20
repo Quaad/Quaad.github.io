@@ -18,9 +18,16 @@ let playerMovement = 0
 let hp = 0
 let weapon = 0
 
+// intial end goal set
+let goalX = 0
+let goalY = 0
+
+// intial variable to store maze arrays
 let maze
+// initialize the fetchdata function 
 fetchData()
 
+// Button onclick press trigger map select
 function fetchMap(mapName) {
     fetchData(mapName)
 }
@@ -36,16 +43,25 @@ async function fetchData(mazeMap) {
       maze = await myPromise
     
     //   maze configurations stored
-    let maze1 = maze.config1
-    let maze2 = maze.config2
+    let maze1 = maze.config1.maze1
+    let maze2 = maze.config2.maze2
 
-    // Default set to maze1 otherwise select map based on chosen
-    let map = maze1
+    if(mazeMap == null) {
+        // Default set to maze1 otherwise select map based on chosen
+        mazeMap = "map1"
+    }
+
+    // chosen map
     if(mazeMap == "map1") {
         map = maze1
+        goalX = maze.config1.goalX
+        goalY = maze.config1.goalY
+        
     } else if(mazeMap == "map2") {
         map = maze2
-    }
+        goalX = maze.config2.goalX
+        goalY = maze.config2.goalY
+    } 
 
     function gameStart() {
         // setting player starting variables and text variables
@@ -106,12 +122,12 @@ async function fetchData(mazeMap) {
     // Drawing the player and checking if they've reached the end
     function drawPlayer() {
         // set fill for blocks
-        ctx.fillStyle = 'green'
+        ctx.fillStyle = 'black'
         // draw a rectangle with fill 
         ctx.fillRect(playerX, playerY, 50, 50)
 
         // Reaching end coordinates
-        if (playerX==400 && playerY==550) {
+        if (playerX==goalX && playerY==goalY) {
             goal.innerText = "Goal Reached!"
             playerMovement = 0
         }
@@ -199,14 +215,14 @@ async function fetchData(mazeMap) {
             } 
         } else if(direction == "left") {
             let colour = checkMaze(25, direction)
-            if (playerY>0 && !colourCheck(colour)) {
+            if (playerX>0 && !colourCheck(colour)) {
                 removePlayer()
                 playerX=playerX-playerMovement
                 drawPlayer()
             } 
         } else if(direction == "right") {
             let colour = checkMaze(75, direction)
-            if (playerY<550 && !colourCheck(colour)) {
+            if (playerX<550 && !colourCheck(colour)) {
                 removePlayer()
                 playerX=playerX+playerMovement
                 drawPlayer()
