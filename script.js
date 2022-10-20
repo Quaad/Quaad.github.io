@@ -76,42 +76,103 @@ function keyPressed(event) {
 
     switch (event.keyCode) {
         case 37:
-        moveLeft()
+        movePlayer("left")
         break;
         
         case 38:
-        moveUp()
+        movePlayer("up")
         // move player up
         break;
         
         case 39:
         // move player right
-        moveRight()
+        movePlayer("right")
         break;
         
         case 40:
         // move player down
-        moveDown()
+        movePlayer("down")
         break;
     }
 }
 
-function moveUp() {
-    var imgd = ctx.getImageData(playerX, playerY-25, 25, 25);
-    var pix = imgd.data;
-    let blue = 0;
-    if(pix[0] == 0 && pix[1] == 0 && pix[2] == 255) {
-        console.log("that's blue")
-        blue = 1;
+// move player function
+function movePlayer(direction) {
+    // set variables 
+    let colour = 0
+    if(direction == "up") {
+        let colour = checkMaze(25, direction)
+        if (playerY>0 && !colourCheck(colour)) {
+            removePlayer()
+            playerY=playerY-50
+            drawPlayer()
+        } 
+    } else if(direction == "down"){
+        let colour = checkMaze(75, direction)
+        if (playerY<550 && !colourCheck(colour)) {
+            removePlayer()
+            playerY=playerY+50
+            drawPlayer()
+        } 
+    } else if(direction == "left") {
+        let colour = checkMaze(25, direction)
+        if (playerY>0 && !colourCheck(colour)) {
+            removePlayer()
+            playerX=playerX-50
+            drawPlayer()
+        } 
+    } else if(direction == "right") {
+        let colour = checkMaze(75, direction)
+        if (playerY<550 && !colourCheck(colour)) {
+            removePlayer()
+            playerX=playerX+50
+            drawPlayer()
+        } 
     }
-    if (playerY>0 && !blue) {
-        removePlayer()
-        playerY=playerY-50
-        drawPlayer()
-    } 
- 
+    if(colour == 2) {
+        score+= 50
+        points.innerText = "Score: " + score
+    }
 }
 
+// Check colour to determine if player should move or gain points
+function colourCheck(colour) {
+    if(colour == 1) {
+        return 1
+    } if(colour == 2) {
+        // increment points if colour was yellow
+        score+= 50
+        points.innerText = "Score: " + score
+        return 0
+    } else {
+        return 0
+    }
+}
+
+// Check what location the player is attempting to move into
+// if it's a wall, then they will be unable to move
+function checkMaze(coordinate, direction) {
+    if(direction == "up") {
+        var imgd = ctx.getImageData(playerX, playerY-coordinate, 25, 25);
+    } else if(direction == "down") {
+        var imgd = ctx.getImageData(playerX, playerY+coordinate, 25, 25);
+    } else if(direction == "left") {
+        var imgd = ctx.getImageData(playerX-coordinate, playerY, 25, 25);
+    } else if(direction == "right") {
+        var imgd = ctx.getImageData(playerX+coordinate, playerY, 25, 25);
+    }
+    var pix = imgd.data
+    if(pix[0] == 0 && pix[1] == 0 && pix[2] == 255) {
+        console.log("checkmaze: that's blue")
+        return 1
+    } else if(pix[0] == 255 && pix[1] == 255 && pix[2] == 0) {
+        console.log("checkmaze: that's yellow")
+        return 2
+    }
+    return 0;
+}
+
+// Old Move function was repeated multiple times
 function moveDown() {
     var imgd = ctx.getImageData(playerX, playerY+75, 25, 25);
     var pix = imgd.data;
@@ -135,36 +196,6 @@ function moveDown() {
     if (playerY<550  && !blue) {
         removePlayer()
         playerY=playerY+50
-        drawPlayer()
-    } 
-}
-
-function moveLeft() {
-    var imgd = ctx.getImageData(playerX-25, playerY, 25, 25);
-    var pix = imgd.data;
-    let blue = 0;
-    if(pix[0] == 0 && pix[1] == 0 && pix[2] == 255) {
-        console.log("that's blue")
-        blue = 1
-    }
-    if (playerX>0  && !blue) {
-        removePlayer()
-        playerX=playerX-50
-        drawPlayer()
-    } 
-}
-
-function moveRight() {
-    var imgd = ctx.getImageData(playerX+75, playerY, 25, 25);
-    var pix = imgd.data;
-    let blue = 0;
-    if(pix[0] == 0 && pix[1] == 0 && pix[2] == 255) {
-        console.log("that's blue")
-        blue = 1;
-    }
-    if (playerX<550  && !blue) {
-        removePlayer()
-        playerX=playerX+50
         drawPlayer()
     } 
 }
