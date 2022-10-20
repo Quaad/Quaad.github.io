@@ -67,12 +67,12 @@ function gameStart() {
             }
         }
     }
-    removePlayer()
     drawPlayer()
 }
 
 function reset() {
     removePlayer()
+    goal.innerText = ""
     gameStart()
 }
 
@@ -154,7 +154,7 @@ function movePlayer(direction) {
     if(playerMovement == 0) {
         return
     }
-    // set variables 
+    // set colour variable 
     let colour = 0
     if(direction == "up") {
         let colour = checkMaze(25, direction)
