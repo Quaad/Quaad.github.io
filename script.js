@@ -40,9 +40,11 @@ async function fetchData(mazeMap) {
       });
       maze = await myPromise
     
+    //   maze configurations stored
     let maze1 = maze.config1
     let maze2 = maze.config2
 
+    // Default set to maze1 otherwise select map based on chosen
     let map = maze1
     if(mazeMap == "map1") {
         map = maze1
@@ -50,14 +52,10 @@ async function fetchData(mazeMap) {
         map = maze2
     }
 
-    console.log(map)
-
     function gameStart() {
         // setting player starting variables and text variables
         removePlayer()
         goal.innerText = ""
-        playerX=100
-        playerY=0
         score=0
         weapon = 0
         hp = 3
@@ -65,7 +63,6 @@ async function fetchData(mazeMap) {
         pointsCheck()
         hpCheck()
         weaponCheck()
-
         // Maze generator
         for (let r = 0; r < map.length; r++) {
             for(let c = 0; c < map[0].length; c++) {
@@ -90,8 +87,25 @@ async function fetchData(mazeMap) {
                 }
             }
         }
-        console.log("hit")
+        playerstart()
         drawPlayer()
+    }
+
+    // Player Coordinates start in a white space
+    function playerstart() {
+        notWhite = true
+        while(notWhite) {
+            playerX = Math.floor(Math.random() * 12) * 50
+            playerY = Math.floor(Math.random() * 12) * 50
+            var imgd = ctx.getImageData(playerX, playerY, 25, 25)
+            var pix = imgd.data
+            if(pix[0] == 255 && pix[1] == 255 && pix[2] == 255) {
+                console.log("success")
+                notWhite = false
+            } else {
+                console.log("failure")
+            }
+        }
     }
 
     // Drawing the player and checking if they've reached the end
@@ -213,13 +227,13 @@ async function fetchData(mazeMap) {
     // if it's a wall, then they will be unable to move
     function checkMaze(coordinate, direction) {
         if(direction == "up") {
-            var imgd = ctx.getImageData(playerX, playerY-coordinate, 25, 25);
+            var imgd = ctx.getImageData(playerX, playerY-coordinate, 25, 25)
         } else if(direction == "down") {
-            var imgd = ctx.getImageData(playerX, playerY+coordinate, 25, 25);
+            var imgd = ctx.getImageData(playerX, playerY+coordinate, 25, 25)
         } else if(direction == "left") {
-            var imgd = ctx.getImageData(playerX-coordinate, playerY, 25, 25);
+            var imgd = ctx.getImageData(playerX-coordinate, playerY, 25, 25)
         } else if(direction == "right") {
-            var imgd = ctx.getImageData(playerX+coordinate, playerY, 25, 25);
+            var imgd = ctx.getImageData(playerX+coordinate, playerY, 25, 25)
         }
         var pix = imgd.data
         if(pix[0] == 0 && pix[1] == 0 && pix[2] == 255) {
