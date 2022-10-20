@@ -8,38 +8,43 @@ let ctx = canvas.getContext('2d')
 let points = document.getElementById('points')
 let health = document.getElementById('health')
 let goal = document.getElementById('goal')
+let item = document.getElementById('item')
 
 // global variables
 let playerX = 0
 let playerY = 0
 let score = 0
 let playerMovement = 0
+let hp = 0
+let weapon = 0
 
 // maze data 
 let map = [
     [1,1,0,1,1,1,1,1,1,1,1,1],
     [1,0,0,1,0,0,0,0,0,0,0,1],
-    [1,1,2,1,0,1,1,0,1,1,0,1],
-    [1,0,0,0,0,0,1,0,1,1,0,1],
+    [1,1,0,1,0,1,1,0,1,1,0,1],
+    [1,0,0,0,0,0,1,0,1,1,4,1],
     [1,0,1,1,0,1,0,0,0,0,0,1],
     [1,0,1,0,1,1,0,1,1,1,1,1],
-    [1,0,1,0,0,0,0,0,1,0,0,1],
+    [1,0,1,0,0,0,0,0,1,4,2,1],
     [1,0,1,0,1,1,1,0,0,0,1,1],
     [1,0,1,0,1,1,1,1,1,0,0,1],
-    [1,0,1,0,0,0,0,0,0,1,0,1],
-    [1,0,0,1,1,1,1,1,0,1,0,1],
-    [1,1,1,1,1,1,1,1,0,1,1,1]
+    [1,0,1,0,0,0,0,2,2,1,0,1],
+    [1,3,0,1,1,1,1,1,0,1,0,1],
+    [1,1,1,1,1,1,1,1,5,1,1,1]
 ]
 
 function gameStart() {
-
     // setting player starting variables and text variables
     playerX=100
     playerY=0
     score=0
+    weapon = 0
+    hp = 3
     playerMovement = 50
-    points.innerText = "Score: " + score
-    health.innerText = "Health: " + 3
+    pointsCheck()
+    hpCheck()
+    weaponCheck()
 
     // Maze generator
     for (let r = 0; r < map.length; r++) {
@@ -50,11 +55,25 @@ function gameStart() {
             } else if (map[r][c]==2) {
                 ctx.fillStyle = 'Yellow';
                 ctx.fillRect((c*50), (r*50), 50, 50);
+            } else if(map[r][c]==3) {
+                ctx.fillStyle = 'orange';
+                ctx.fillRect((c*50), (r*50), 50, 50);
+            } else if(map[r][c]==4) {
+                ctx.fillStyle = 'red';
+                ctx.fillRect((c*50), (r*50), 50, 50);
+            } else if(map[r][c]==5) {
+                ctx.fillStyle = 'pink';
+                ctx.fillRect((c*50), (r*50), 50, 50);
             }
         }
     }
-
+    removePlayer()
     drawPlayer()
+}
+
+function reset() {
+    removePlayer()
+    gameStart()
 }
 
 // Drawing the player and checking if they've reached the end
@@ -77,6 +96,23 @@ function removePlayer() {
     ctx.fillStyle = 'white'
     // draw a rectangle with fill 
     ctx.fillRect(playerX, playerY, 50, 50)
+}
+
+function hpCheck() {
+    health.innerText = "Health: " + hp
+    // Hp check
+    if(hp == 0) {
+        goal.innerText = "You have died"
+        playerMovement = 0
+    }
+}
+
+function pointsCheck() {
+    points.innerText = "Score: " + score
+}
+
+function weaponCheck() {
+    item.innerText = "items: " + weapon
 }
 
 // Check for key input
@@ -155,20 +191,6 @@ function movePlayer(direction) {
     }
 }
 
-// Check colour to determine if player should move or gain points
-function colourCheck(colour) {
-    if(colour == 1) {
-        return 1
-    } if(colour == 2) {
-        // increment points if colour was yellow
-        score+= 50
-        points.innerText = "Score: " + score
-        return 0
-    } else {
-        return 0
-    }
-}
-
 // Check what location the player is attempting to move into
 // if it's a wall, then they will be unable to move
 function checkMaze(coordinate, direction) {
@@ -188,8 +210,42 @@ function checkMaze(coordinate, direction) {
     } else if(pix[0] == 255 && pix[1] == 255 && pix[2] == 0) {
         console.log("checkmaze: that's yellow")
         return 2
+    } else if(pix[0] == 255 && pix[1] == 0 && pix[2] == 0) {
+        console.log("checkmaze: that's red")
+        return 3
+    } else if(pix[0] == 255 && pix[1] == 165 && pix[2] == 0) {
+        console.log("checkmaze: that's orange")
+        return 4
     }
-    return 0;
+    return 0
 }
 
+// Check colour to determine if player should move or gain points
+function colourCheck(colour) {
+    // Check for blue, yellow and red
+    if(colour == 1) {
+        return 1
+    } else if(colour == 2) {
+        // increment points if colour was yellow
+        score+= 50
+        pointsCheck()
+        return 0
+    } else if(colour == 3) {
+        if(weapon) {
+            weapon = weapon-1
+            weaponCheck()
+            return 0
+        } else { 
+            hp = hp-1
+            hpCheck()
+        }
+        return 1
+    } else if(colour == 4) {
+            weapon = weapon + 1
+            weaponCheck()
+    }
+    return 0
+}
+
+// Start game
 gameStart()
