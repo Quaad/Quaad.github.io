@@ -22,12 +22,8 @@ let playerMovement = 0
 let hp = 0
 let weapon = 0
 
-function map1() {
-    fetchData("map1")
-}
-
-function map2() {
-    fetchData("map2")
+function fetchMap(mapName) {
+    fetchData(mapName)
 }
 
 // async function to ensure data loads first before generating the maze and starting the game
