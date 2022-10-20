@@ -192,32 +192,4 @@ function checkMaze(coordinate, direction) {
     return 0;
 }
 
-// Old Move function was repeated multiple times
-function moveDown() {
-    var imgd = ctx.getImageData(playerX, playerY+75, 25, 25);
-    var pix = imgd.data;
-    let blue = 0;
-    let yellow = 0;
-    if(pix[0] == 0 && pix[1] == 0 && pix[2] == 255) {
-        console.log("that's blue")
-        blue = 1;
-    } else if(pix[0] == 255 && pix[1] == 255 && pix[2] == 0) {
-        console.log("that's yellow")
-        yellow = 1
-    }
-    if(playerY<550 && yellow) {
-        removePlayer()
-        playerY=playerY+50
-        drawPlayer()
-        score+= 50
-        points.innerText = "Score: " + score
-        return
-    }
-    if (playerY<550  && !blue) {
-        removePlayer()
-        playerY=playerY+50
-        drawPlayer()
-    } 
-}
-
 gameStart()
