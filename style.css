@@ -2,7 +2,31 @@ body {
     background-color: #F8F8F8;
 }
 
-#box {
+#goal {
+    color:lightgreen;
+    font-weight: bold;
+}
+
+#points {
+    color: gold;
+}
+
+#health {
+    color: pink;
+}
+
+#item {
+    color:orange;
+}
+
+
+#statBox {
+    width:500px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#tileBox {
     width: 500px; 
     height: auto;
     margin-bottom: 10px;
