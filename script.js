@@ -74,6 +74,7 @@ async function fetchData(mazeMap = "map1") {
     function gameStart() {
         // setting mazecorrect to true 
         let MazeCorrect = true
+        removePlayer()
 
         // Maze generator
         for (let r = 0; r < map.length; r++) {
@@ -108,7 +109,6 @@ async function fetchData(mazeMap = "map1") {
         if(!MazeCorrect) {
             return
         }
-        removePlayer()
         error.innerText = ""
         goal.innerText = ""
         score=0
