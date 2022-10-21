@@ -1,0 +1,98 @@
+body {
+    background-color: #F8F8F8;
+}
+
+#box {
+    width: 500px; 
+    height: auto;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#playerTile{
+    background-color: black;
+    padding: 10px; 
+    margin-bottom: 5px;
+    border: 2px solid grey; 
+    border-radius: 5px;
+    width:50px;
+    height:50px;
+}
+
+#treasureTile{
+    background-color: yellow;
+    padding: 10px; 
+    margin-bottom: 5px;
+    border: 2px solid grey; 
+    border-radius: 5px;
+    width:50px;
+    height:50px;
+}
+
+#itemTile{
+    background-color: orange;
+    padding: 10px; 
+    margin-bottom: 5px;
+    border: 2px solid grey; 
+    border-radius: 5px;
+    width:50px;
+    height:50px;
+}
+
+#enemyTile{
+    background-color: red;
+    padding: 10px; 
+    margin-bottom: 5px;
+    border: 2px solid grey; 
+    border-radius: 5px;
+    width:50px;
+    height:50px;
+}
+
+#goalTile{
+    background-color: pink;
+    padding: 10px; 
+    margin-bottom: 5px;
+    border: 2px solid grey;
+    border-radius: 5px; 
+    width:50px;
+    height:50px;
+}
+
+#errorTile{
+    background-color: purple;
+    padding: 10px; 
+    margin-bottom: 5px;
+    border: 2px solid grey; 
+    border-radius: 5px;
+    width:50px;
+    height:50px;
+}
+
+p{
+    color: black;
+    text-align: center;
+}
+
+#playerTile p {
+    color: white;
+    text-align: center;
+}
+
+#error {
+    color: purple;
+}
+
+.button {
+    cursor: pointer;
+    background-color: #008CBA; /* Green */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }

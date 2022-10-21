@@ -9,6 +9,9 @@ let points = document.getElementById('points')
 let health = document.getElementById('health')
 let goal = document.getElementById('goal')
 let item = document.getElementById('item')
+let error = document.getElementById('error')
+
+let playerTile = document.getElementById('tile1')
 
 // global variables
 let playerX = 0
@@ -27,13 +30,23 @@ let maze
 // initialize the fetchdata function 
 fetchData()
 
+//
+let storeMapName = "map1"
+
 // Button onclick press trigger map select
 function fetchMap(mapName) {
     fetchData(mapName)
+    storeMapName = mapName
+}
+
+// Play again button 
+function playAgain() {
+    fetchData(storeMapName)
 }
 
 // async function to ensure data loads first before generating the maze and starting the game
-async function fetchData(mazeMap) {
+// Set default map to map1 when load begins
+async function fetchData(mazeMap = "map1") {
     let myPromise = new Promise(function(resolve, reject) {
         resolve(fetch("./configs/configs.json")
         .then(function(resp){
@@ -45,11 +58,6 @@ async function fetchData(mazeMap) {
     //   maze configurations stored
     let maze1 = maze.config1.maze1
     let maze2 = maze.config2.maze2
-
-    if(mazeMap == null) {
-        // Default set to maze1 otherwise select map based on chosen
-        mazeMap = "map1"
-    }
 
     // chosen map
     if(mazeMap == "map1") {
@@ -64,21 +72,18 @@ async function fetchData(mazeMap) {
     } 
 
     function gameStart() {
-        // setting player starting variables and text variables
-        removePlayer()
-        goal.innerText = ""
-        score=0
-        weapon = 0
-        hp = 3
-        playerMovement = 50
-        pointsCheck()
-        hpCheck()
-        weaponCheck()
+        // setting mazecorrect to true 
+        let MazeCorrect = true
+
         // Maze generator
         for (let r = 0; r < map.length; r++) {
             for(let c = 0; c < map[0].length; c++) {
-                ctx.fillStyle = 'blue'
-                if(map[r][c]==1) {
+                if(map[r][c]==0) {
+                    ctx.fillStyle = 'white';
+                    ctx.fillRect((c*50), (r*50), 50, 50);
+                }
+                else if(map[r][c]==1) {
+                    ctx.fillStyle = 'blue'
                     ctx.fillRect((c*50), (r*50), 50, 50);
                 } else if (map[r][c]==2) {
                     ctx.fillStyle = 'Yellow';
@@ -93,11 +98,26 @@ async function fetchData(mazeMap) {
                     ctx.fillStyle = 'pink';
                     ctx.fillRect((c*50), (r*50), 50, 50);
                 } else {
-                    ctx.fillStyle = 'white';
+                    MazeCorrect = false
+                    ctx.fillStyle = 'purple';
                     ctx.fillRect((c*50), (r*50), 50, 50);
+                    error.innerText = "Error in configuration at row " + (r+1) + " column " + (c+1)
                 }
             }
         }
+        if(!MazeCorrect) {
+            return
+        }
+        removePlayer()
+        error.innerText = ""
+        goal.innerText = ""
+        score=0
+        weapon = 0
+        hp = 3
+        playerMovement = 50
+        pointsCheck()
+        hpCheck()
+        weaponCheck()
         playerstart()
         drawPlayer()
     }
@@ -200,28 +220,28 @@ async function fetchData(mazeMap) {
         // set colour variable 
         let colour = 0
         if(direction == "up") {
-            let colour = checkMaze(25, direction)
+            colour = checkMaze(25, direction)
             if (playerY>0 && !colourCheck(colour)) {
                 removePlayer()
                 playerY=playerY-playerMovement
                 drawPlayer()
             } 
         } else if(direction == "down"){
-            let colour = checkMaze(75, direction)
+            colour = checkMaze(75, direction)
             if (playerY<550 && !colourCheck(colour)) {
                 removePlayer()
                 playerY=playerY+playerMovement
                 drawPlayer()
             } 
         } else if(direction == "left") {
-            let colour = checkMaze(25, direction)
+            colour = checkMaze(25, direction)
             if (playerX>0 && !colourCheck(colour)) {
                 removePlayer()
                 playerX=playerX-playerMovement
                 drawPlayer()
             } 
         } else if(direction == "right") {
-            let colour = checkMaze(75, direction)
+            colour = checkMaze(75, direction)
             if (playerX<550 && !colourCheck(colour)) {
                 removePlayer()
                 playerX=playerX+playerMovement

@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <title>Maze Game</title>
 </head>
 <body>
     <h1 id="goal"></h1>
+    <h1 id="error"></h1>
     <h2 id="points">Score: 0</h2>
     <h2 id="health">Health: 3</h2>
     <h2 id="item">items: 0</h2>
@@ -15,8 +17,30 @@
         Your browser does not support the HTML canvas tag.
     </canvas>
     <hr/>
-    <button onclick="fetchMap('map1')">Map 1</button>
-    <button onclick="fetchMap('map2')">Map 2</button>
+    <h3>Use the arrow keys to move!</h3>
+    <div id="box">
+        <div id="playerTile">
+            <p>Player</p>
+        </div>
+        <div id="treasureTile">
+            <p>Treasure</p>
+        </div>
+        <div id="itemTile">
+            <p>Item</p>
+        </div>
+        <div id="enemyTile">
+            <p>Enemy</p>
+        </div>
+        <div id="goalTile">
+            <p>Goal</p>
+        </div>
+        <div id="errorTile">
+            <p>Error</p>
+        </div>
+    </div>
+    <button class="button" onclick="fetchMap('map1')">Map 1</button>
+    <button class="button" onclick="fetchMap('map2')">Map 2</button>
+    <button class="button" onclick="playAgain()">Play Again</button>
 
     <script src="script.js"></script>
 </body>
