@@ -45,7 +45,7 @@ function playAgain() {
 }
 
 // async function to ensure data loads first before generating the maze and starting the game
-// Set default map to map1 when load begins
+// Set default map to map1
 async function fetchData(mazeMap = "map1") {
     let myPromise = new Promise(function(resolve, reject) {
         resolve(fetch("./configs/configs.json")
@@ -81,7 +81,6 @@ async function fetchData(mazeMap = "map1") {
                 if(map[r][c]==0) {
                     ctx.fillStyle = 'white';
                     ctx.fillRect((c*50), (r*50), 50, 50);
-                    ctx.strokeRect((c*50), (r*50), 50, 50);
                 }
                 else if(map[r][c]==1) {
                     ctx.fillStyle = 'blue'
@@ -89,24 +88,19 @@ async function fetchData(mazeMap = "map1") {
                 } else if (map[r][c]==2) {
                     ctx.fillStyle = 'Yellow';
                     ctx.fillRect((c*50), (r*50), 50, 50);
-                    ctx.strokeRect((c*50), (r*50), 50, 50);
                 } else if(map[r][c]==3) {
                     ctx.fillStyle = 'orange';
                     ctx.fillRect((c*50), (r*50), 50, 50);
-                    ctx.strokeRect((c*50), (r*50), 50, 50);
                 } else if(map[r][c]==4) {
                     ctx.fillStyle = 'red';
                     ctx.fillRect((c*50), (r*50), 50, 50);
-                    ctx.strokeRect((c*50), (r*50), 50, 50);
                 } else if(map[r][c]==5) {
                     ctx.fillStyle = 'pink';
                     ctx.fillRect((c*50), (r*50), 50, 50);
-                    ctx.strokeRect((c*50), (r*50), 50, 50);
                 } else {
                     MazeCorrect = false
                     ctx.fillStyle = 'purple';
                     ctx.fillRect((c*50), (r*50), 50, 50);
-                    ctx.strokeRect((c*50), (r*50), 50, 50);
                     error.innerText = "Error in configuration at row " + (r+1) + " column " + (c+1)
                 }
             }
